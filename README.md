@@ -28,12 +28,12 @@ make up
 ##  Uso
 
 ```sh
-# Sobe o projeto
+# Suba o projeto
 make up
 
-# Baixa o projeto
+# Baixe o projeto
 make down
 
-# Entra no container
+# Entre no container
 make in laravel
 ```
