@@ -10,9 +10,11 @@ class BarberScheduleRepository
      * @param array $data
      */
     public function getScheduleDayBarber(array $data)
-    {
-        return BarbersSchedules::where('barber_id', $data['barber_id'])
-        ->whereDate('selected_date_and_time', $data['selected_day'])
+    {   
+        return BarbersSchedules::select('barbers_schedules.selected_date_and_time')
+        ->join('services_registers', 'barbers_schedules.id', '=', 'services_registers.id')
+        ->where('barbers_schedules.id', $data['barber_id'])
+        ->whereDate('barbers_schedules.selected_date_and_time', $data['selected_day'])
         ->get();
     }
 }

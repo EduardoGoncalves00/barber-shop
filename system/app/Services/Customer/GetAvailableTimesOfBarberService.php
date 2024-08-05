@@ -3,12 +3,20 @@
 namespace App\Services\Customer;
 
 use App\Repositories\BarberScheduleRepository;
-use App\Repositories\UserRepository;
+use App\Repositories\BarbersWorkingHoursRepository;
 use Carbon\Carbon;
 
 class GetAvailableTimesOfBarberService 
 {
-    protected $scheduleDayMounted = [];
+    protected $scheduleDay = [];
+    protected $barbersWorkingHoursRepository;
+    protected $barberScheduleRepository;
+
+    public function __construct(BarbersWorkingHoursRepository $barbersWorkingHoursRepository, BarberScheduleRepository $barberScheduleRepository)
+    {
+        $this->barbersWorkingHoursRepository = $barbersWorkingHoursRepository;
+        $this->barberScheduleRepository = $barberScheduleRepository;
+    }
 
     /**
      * @param array $data
@@ -16,10 +24,10 @@ class GetAvailableTimesOfBarberService
      */
     public function getScheduleAvailableBarber(array $data): array
     {
-        $barber = app(UserRepository::class)->find($data['barber_id']);
-    
-        $this->scheduleDayMounted = $this->mountScheduleStructureOfDay($barber['start_work'], $barber['end_work']);
-        
+        $barber = $this->barbersWorkingHoursRepository->getBarberWithWorkingHours($data['barber_id']);
+
+        $this->scheduleDay = $this->mountScheduleDay($barber->start_work, $barber->end_work);
+
         return $this->filterAvailableTimes($data);
     }
     
@@ -28,7 +36,7 @@ class GetAvailableTimesOfBarberService
      * @param string $endWork
      * @return array
      */
-    private function mountScheduleStructureOfDay($startWork, $endWork): array
+    private function mountScheduleDay($startWork, $endWork): array
     {
         $startWork = Carbon::createFromTimeString($startWork);
         $endWork = Carbon::createFromTimeString($endWork);
@@ -49,30 +57,53 @@ class GetAvailableTimesOfBarberService
      */
     private function filterAvailableTimes(array $data): array
     {
-        $getTimesMarkedOfDay = app(BarberScheduleRepository::class)->getScheduleDayBarber($data);
+        $durationInMinutesService = 30;
 
-        $occupiedSlots = [];
-        foreach ($getTimesMarkedOfDay as $value) {
-            $occupiedSlots[] = Carbon::createFromTimeString($value->selected_date_and_time)->format('H:i');
-        }
+        $hoursOccupied = $this->getHoursMarkedDaySelected($data);
 
-        $availableTimes = [];
-        $durationInMinutes = 30;
-        $requiredSlots = $durationInMinutes / 30;
-        $totalSlots = count($this->scheduleDayMounted);
+        $requiredSlot = $durationInMinutesService / 30;
 
+        $totalSlots = count($this->scheduleDay);
+
+        return $this->availableTimes($totalSlots, $requiredSlot, $hoursOccupied);
+    }
+
+    /**
+     * @param int $totalSlots
+     * @param int $requiredSlot
+     * @param array $hoursOccupied
+     * @return array
+     */
+    private function availableTimes(int $totalSlots, int $requiredSlot, array $hoursOccupied): array
+    {
         for ($i = 0; $i < $totalSlots; $i++) {
             
-            $getSlotsSchedule = array_slice($this->scheduleDayMounted, $i, $requiredSlots);
+            $getSlotsSchedule = array_slice($this->scheduleDay, $i, $requiredSlot);
+            
+            $slotsAvailable = array_intersect($getSlotsSchedule, $hoursOccupied);
 
-            $slotsAvailable = array_intersect($getSlotsSchedule, $occupiedSlots);        
-            $isAvailable = empty($slotsAvailable);
-
-            if ($isAvailable) {
-                $availableTimes[] = $this->scheduleDayMounted[$i];
+            if (empty($slotsAvailable)) {
+                $availableTimes[] = $this->scheduleDay[$i];
             }
         }
 
         return $availableTimes;
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    private function getHoursMarkedDaySelected(array $data): array
+    {
+        $getHoursMarkedDaySelected = $this->barberScheduleRepository->getScheduleDayBarber($data);
+
+        $hoursOccupied = [];
+        
+        foreach ($getHoursMarkedDaySelected as $value) {
+            $hoursOccupied[] = Carbon::createFromTimeString($value->selected_date_and_time)->format('H:i');
+        }
+
+        return $hoursOccupied;
     }
 }
