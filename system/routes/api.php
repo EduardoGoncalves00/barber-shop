@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('customer')->group(function () {
         Route::controller(CustomerController::class)->group(function () {
             Route::post('/update', 'update');
-            Route::post('/schedule-available-barber', 'getScheduleAvailableBarber');
+            Route::post('/get-available-times-of-barber', 'GetAvailableTimesOfBarberService');
         });
     });
 

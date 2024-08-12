@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration\Barber;
+namespace Tests\Feature\Barber;
 
 use App\Exceptions\EmailAlreadyRegisteredException;
 use App\Models\BarbersWorkingHours;

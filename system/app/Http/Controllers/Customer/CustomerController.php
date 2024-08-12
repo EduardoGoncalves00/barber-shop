@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Exceptions\EmailAlreadyRegisteredException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Barber\GetAvailableTimesOfBarberRequest;
 use App\Http\Requests\Barber\GetScheduleAvailableBarberRequest;
 use App\Http\Requests\Customer\UpdateCustomerRequest;
 use App\Http\Requests\Customer\CreateCustomerRequest;
@@ -71,17 +72,17 @@ class CustomerController extends Controller
     }
 
     /**
-     * @param GetScheduleAvailableBarberRequest $request
+     * @param GetAvailableTimesOfBarberRequest $request
      * @return mixed
      * 
      * @throws Exception
      */
-    public function getScheduleAvailableBarber(GetScheduleAvailableBarberRequest $request): mixed
+    public function GetAvailableTimesOfBarberService(GetAvailableTimesOfBarberRequest $request): mixed
     {
         try {
             return new ApiResponseSuccess(
-                "Success when get schedule barber.",
-                app(GetAvailableTimesOfBarberService::class)->getScheduleAvailableBarber($request->only(['barber_id', 'service_id', 'selected_day'])),
+                "Success when get available times of barber.",
+                app(GetAvailableTimesOfBarberService::class)->getTimes($request->only(['barber_id', 'service_id', 'selected_day'])),
                 200
             );
         } catch (Exception $e) {
@@ -91,7 +92,7 @@ class CustomerController extends Controller
                 'line' => $e->getLine()
             ]);
 
-            return new ApiResponseError("Error when get schedule barber.", 400);
+            return new ApiResponseError("Error when get available times of barber.", 400);
         }
     }
 }

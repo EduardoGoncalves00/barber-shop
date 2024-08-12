@@ -1,20 +1,17 @@
 <?php
 
-namespace Tests\Integration\Customer;
+namespace Tests\Feature\Customer;
 
 use App\Exceptions\EmailAlreadyRegisteredException;
-use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\Customer\CustomerService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
-class CustomerUpdateTest extends TestCase
+class CustomerCreateTest extends TestCase
 {
     use RefreshDatabase;
     
-    protected $customer;
     protected $customerService;
 
     protected function setUp(): void
@@ -23,50 +20,37 @@ class CustomerUpdateTest extends TestCase
 
         $userRepository = new UserRepository();
         $this->customerService = new CustomerService($userRepository);
-
-        $this->customer = User::factory()->create();
     }
 
-    public function testUpdateCustomer(): void
-    {
-        Sanctum::actingAs($this->customer);
-    
-        $customerUpdated = $this->customerService->update([
+    public function testCreateCustomer(): void
+    {    
+        $customerCreated = $this->customerService->create([
             'name' => 'Eduardo Boeira',
             'email' => 'eduardo@example.com',
             'phone' => '(51) 8888-8888',
             'password' => 'password'
         ]);
 
-        $this->assertTrue($customerUpdated);
+        $this->assertTrue($customerCreated);
     }
 
-    public function testExpectsToUpatedInUserTable(): void
-    {
-        Sanctum::actingAs($this->customer);
-    
-        $customerUpdated = $this->customerService->update([
+    public function testCreateCustomerExpectedTypeCustomer(): void
+    {    
+        $this->customerService->create([
             'name' => 'Eduardo Boeira',
             'email' => 'eduardo@example.com',
             'phone' => '(51) 8888-8888',
             'password' => 'password'
         ]);
 
-        $this->assertTrue($customerUpdated);
-
-        $this->assertDatabaseHas('users', [
-            'id' => $this->customer->id,
-            'name' => 'Eduardo Boeira',
-            'email' => 'eduardo@example.com',
-            'phone' => '(51) 8888-8888',
-        ]);
+        $customerType = app(UserRepository::class)->getByEmail('eduardo@example.com');
+        
+        $this->assertEquals('customer', $customerType->type);
     }
 
-    public function testUpdateCustomerEmailRegistered(): void
+    public function testCreateCustomerEmailRegistered(): void
     {
         $this->expectException(EmailAlreadyRegisteredException::class);
-
-        Sanctum::actingAs($this->customer);
 
         $this->customerService->create([
             'name' =>' Eduardo Boeira',
@@ -75,7 +59,7 @@ class CustomerUpdateTest extends TestCase
             'password' => 'password'
         ]);
 
-        $this->customerService->update([
+        $this->customerService->create([
             'email' => 'eduardo@example.com',
         ]);
     }

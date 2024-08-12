@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration\Customer;
+namespace Tests\Feature\Customer;
 
 use App\Models\BarbersWorkingHours;
 use App\Models\ServicesTypes;

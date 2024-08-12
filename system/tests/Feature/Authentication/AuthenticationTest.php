@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration\Authentication;
+namespace Tests\Feature\Authentication;
 
 use App\Exceptions\IncorrectCredentialsException;
 use App\Models\User;

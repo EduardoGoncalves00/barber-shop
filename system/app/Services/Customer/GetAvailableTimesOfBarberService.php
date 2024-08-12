@@ -22,7 +22,7 @@ class GetAvailableTimesOfBarberService
      * @param array $data
      * @return array
      */
-    public function getScheduleAvailableBarber(array $data): array
+    public function getTimes(array $data): array
     {
         $barber = $this->barbersWorkingHoursRepository->getBarberWithWorkingHours($data['barber_id']);
 
