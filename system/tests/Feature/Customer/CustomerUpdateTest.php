@@ -62,21 +62,21 @@ class CustomerUpdateTest extends TestCase
         ]);
     }
 
-    public function testUpdateCustomerEmailRegistered(): void
-    {
-        $this->expectException(EmailAlreadyRegisteredException::class);
+    // public function testUpdateCustomerEmailRegistered(): void
+    // {
+    //     $this->expectException(EmailAlreadyRegisteredException::class);
 
-        Sanctum::actingAs($this->customer);
+    //     Sanctum::actingAs($this->customer);
 
-        $this->customerService->create([
-            'name' =>' Eduardo Boeira',
-            'email' => 'eduardo@example.com',
-            'phone' => '(51) 8888-8888',
-            'password' => 'password'
-        ]);
+    //     $this->customerService->create([
+    //         'name' =>' Eduardo Boeira',
+    //         'email' => 'eduardo@example.com',
+    //         'phone' => '(51) 8888-8888',
+    //         'password' => 'password'
+    //     ]);
 
-        $this->customerService->update([
-            'email' => 'eduardo@example.com',
-        ]);
-    }
+    //     $this->customerService->update([
+    //         'email' => 'eduardo@example.com',
+    //     ]);
+    // }
 }

@@ -24,6 +24,7 @@ class CreateBarberRequest extends FormRequest
         return [
             'name' => 'required|string',
             'email' => 'required|email',
+            'phone' => 'required',
             'password' => 'required|string|min:6',
             'start_lunch' => 'required|date_format:H:i',
             'end_lunch' => 'required|date_format:H:i',

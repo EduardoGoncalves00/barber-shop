@@ -2,12 +2,10 @@
 
 namespace Tests\Unit\Barber;
 
-use App\Exceptions\EmailAlreadyRegisteredException;
 use App\Repositories\BarbersWorkingHoursRepository;
 use App\Repositories\UserRepository;
 use Tests\TestCase;
 use App\Services\Barber\BarberService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Mockery;
 
@@ -53,7 +51,6 @@ class BarberUpdateTest extends TestCase
 
         $customerUpdated = $this->barberService->update([
             'name' => 'Eduardo Boeira',
-            'email' => 'eduardo@example.com',
             'phone' => '(51) 8888-8888',
             'password' => 'password',
             'start_lunch' => '13:00',
@@ -65,10 +62,8 @@ class BarberUpdateTest extends TestCase
         $this->assertTrue($customerUpdated);
     }
 
-    public function testUpdateBarberEmailRegistered(): void
+    public function testUpdatePasswordBarber(): void
     {
-        $this->expectException(EmailAlreadyRegisteredException::class);
-
         $this->userRepository
             ->shouldReceive('update')
             ->andReturn();
@@ -80,17 +75,12 @@ class BarberUpdateTest extends TestCase
         $this->userRepository
             ->shouldReceive('getByEmail')
             ->with('eduardo@example.com')
-            ->andReturn(true);
+            ->andReturn(false);
 
-        $this->barberService->update([
-            'name' => 'Eduardo Boeira',
-            'email' => 'eduardo@example.com',
-            'phone' => '(51) 8888-8888',
+        $customerUpdated = $this->barberService->update([
             'password' => 'password',
-            'start_lunch' => '13:00',
-            'end_lunch' => '14:00',
-            'start_work' => '09:00',
-            'end_work' => '20:00'
         ]);
+
+        $this->assertTrue($customerUpdated);
     }
-}
+};

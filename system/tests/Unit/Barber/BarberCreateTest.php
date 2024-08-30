@@ -8,7 +8,6 @@ use App\Repositories\BarbersWorkingHoursRepository;
 use App\Repositories\UserRepository;
 use Tests\TestCase;
 use App\Services\Barber\BarberService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 
 class BarberCreateTest extends TestCase

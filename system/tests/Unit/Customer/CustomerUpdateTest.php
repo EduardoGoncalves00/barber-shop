@@ -1,11 +1,9 @@
 <?php
 
-namespace Tests\Feature\Customer;
+namespace Tests\Unit\Customer;
 
-use App\Exceptions\EmailAlreadyRegisteredException;
 use App\Repositories\UserRepository;
 use App\Services\Customer\CustomerService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Mockery;
 use Tests\TestCase;
@@ -70,22 +68,5 @@ class CustomerUpdateTest extends TestCase
         ]);
 
         $this->assertTrue($customerUpdated);
-    }
-
-    public function testUpdateCustomerEmailRegistered(): void
-    {
-        $this->expectException(EmailAlreadyRegisteredException::class);
-        
-        $this->userRepository
-            ->shouldReceive('getByEmail')
-            ->with('eduardo@example.com')
-            ->andReturn(true);
-
-        $this->customerService->update([
-            'name' => 'Eduardo Boeira',
-            'email' => 'eduardo@example.com',
-            'phone' => '(51) 8888-8888',
-            'password' => 'password'
-        ]);
     }
 }

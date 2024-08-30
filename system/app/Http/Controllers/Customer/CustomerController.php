@@ -28,7 +28,7 @@ class CustomerController extends Controller
         try {
             app(CustomerService::class)->create($request->only(['name', 'phone', 'email', 'password']));
 
-            return new ApiResponseSuccess("Success when creating.", 200);
+            return new ApiResponseSuccess("Success when creating.", 201);
         } catch (EmailAlreadyRegisteredException $e) {
             Log::error(__METHOD__, [
                 'message' => $e->getMessage(),
@@ -36,7 +36,7 @@ class CustomerController extends Controller
                 'line' => $e->getLine()
             ]);
 
-            return new ApiResponseError("E-mail already registered", 400);
+            return new ApiResponseError("E-mail already registered.", 400);
         } catch (Exception $e) {
             Log::error(__METHOD__, [
                 'message' => $e->getMessage(),
@@ -57,7 +57,7 @@ class CustomerController extends Controller
     public function update(UpdateCustomerRequest $request): mixed
     {
         try {
-            app(CustomerService::class)->update($request->only(['name', 'email', 'phone', 'password']));
+            app(CustomerService::class)->update($request->only(['name', 'phone', 'password']));
 
             return new ApiResponseSuccess("Success when updating.", 200);
         } catch (Exception $e) {
@@ -77,7 +77,7 @@ class CustomerController extends Controller
      * 
      * @throws Exception
      */
-    public function GetAvailableTimesOfBarberService(GetAvailableTimesOfBarberRequest $request): mixed
+    public function GetAvailableTimesOfBarber(GetAvailableTimesOfBarberRequest $request): mixed
     {
         try {
             return new ApiResponseSuccess(

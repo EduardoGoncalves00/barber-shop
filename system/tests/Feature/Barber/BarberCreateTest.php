@@ -3,8 +3,6 @@
 namespace Tests\Feature\Barber;
 
 use App\Exceptions\EmailAlreadyRegisteredException;
-use App\Models\BarbersWorkingHours;
-use App\Models\User;
 use App\Repositories\BarbersWorkingHoursRepository;
 use App\Repositories\UserRepository;
 use App\Services\Barber\BarberService;

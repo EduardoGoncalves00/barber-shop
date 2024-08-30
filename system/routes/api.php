@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('customer')->group(function () {
         Route::controller(CustomerController::class)->group(function () {
             Route::post('/update', 'update');
-            Route::post('/get-available-times-of-barber', 'GetAvailableTimesOfBarberService');
+            Route::post('/get-available-times-of-barber', 'GetAvailableTimesOfBarber');
         });
     });
 
@@ -35,4 +35,4 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('/create-customer', [CustomerController::class, 'create']);
-Route::post('/create-barber', [CustomerController::class, 'create']);
+Route::post('/create-barber', [BarberController::class, 'create']);

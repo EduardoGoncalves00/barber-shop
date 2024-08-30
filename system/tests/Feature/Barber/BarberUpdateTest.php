@@ -97,26 +97,4 @@ class BarberUpdateTest extends TestCase
             'end_work' => '20:00'
         ]);
     }
-
-    public function testUpdateBarberEmailRegistered(): void
-    {
-        $this->expectException(EmailAlreadyRegisteredException::class);
-
-        Sanctum::actingAs($this->barber);
-
-        $this->barberService->create([
-            'name' =>' Eduardo Boeira',
-            'email' => 'eduardo@example.com',
-            'phone' => '(51) 8888-8888',
-            'password' => 'password',
-            'start_lunch' => '13:00',
-            'end_lunch' => '14:00',
-            'start_work' => '09:00',
-            'end_work' => '20:00'
-        ]);
-
-        $this->barberService->update([
-            'email' => 'eduardo@example.com',
-        ]);
-    }
 }

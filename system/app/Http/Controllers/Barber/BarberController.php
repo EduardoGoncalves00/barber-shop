@@ -25,7 +25,7 @@ class BarberController extends Controller
         try {
             app(BarberService::class)->create($request->only(['name', 'email', 'phone', 'password', 'start_work', 'end_work', 'start_lunch', 'end_lunch']));
 
-            return new ApiResponseSuccess("Success when creating.", 200);
+            return new ApiResponseSuccess("Success when creating.", 201);
         } catch (EmailAlreadyRegisteredException $e) {
             Log::error(__METHOD__, [
                 'message' => $e->getMessage(),
@@ -54,7 +54,7 @@ class BarberController extends Controller
     public function update(UpdateBarberRequest $request): mixed
     {
         try {
-            app(BarberService::class)->update($request->only(['name', 'email', 'phone', 'password', 'start_work', 'end_work', 'start_lunch', 'end_lunch']));
+            app(BarberService::class)->update($request->only(['name', 'phone', 'password', 'start_work', 'end_work', 'start_lunch', 'end_lunch']));
 
             return new ApiResponseSuccess("Success when updating.", 200);
         } catch (Exception $e) {
