@@ -2,13 +2,14 @@
 
 namespace Tests\EndToEnd\Customer;
 
-use App\Models\ServicesTypes;
+use App\Models\ServiceType;
 use App\Services\Customer\GetAvailableTimesOfBarberService;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 
+// in construction
 class GetAvailableTimesOfBarberTest extends TestCase
 {
     use RefreshDatabase;
@@ -44,7 +45,7 @@ class GetAvailableTimesOfBarberTest extends TestCase
         ]);
 
         // in contruction
-        $this->serviceType = ServicesTypes::factory()->create([
+        $this->serviceType = ServiceType::factory()->create([
             'service_name' => 'hair',
             'value' => 50,
             'estimated_time' => '00:30:00'

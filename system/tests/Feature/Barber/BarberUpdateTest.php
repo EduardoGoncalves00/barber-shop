@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Barber;
 
-use App\Models\BarbersWorkingHours;
+use App\Models\BarberWorkingHour;
 use App\Models\User;
-use App\Repositories\BarbersWorkingHoursRepository;
+use App\Repositories\BarberWorkingHourRepository;
 use App\Repositories\UserRepository;
 use App\Services\Barber\BarberService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,7 +16,7 @@ class BarberUpdateTest extends TestCase
     use RefreshDatabase;
     
     protected $barber;
-    protected $barberWorkingHours;
+    protected $barberWorkingHour;
     protected $barberService;
 
     protected function setUp(): void
@@ -24,14 +24,14 @@ class BarberUpdateTest extends TestCase
         parent::setUp();
 
         $userRepository = new UserRepository();
-        $barbersWorkingHoursRepository = new BarbersWorkingHoursRepository();
-        $this->barberService = new BarberService($userRepository, $barbersWorkingHoursRepository);
+        $barberWorkingHourRepository = new BarberWorkingHourRepository();
+        $this->barberService = new BarberService($userRepository, $barberWorkingHourRepository);
 
         $this->barber = User::factory()->create([
             'type' => 'barber'
         ]);
 
-        $this->barberWorkingHours = BarbersWorkingHours::factory()->create([
+        $this->barberWorkingHour = BarberWorkingHour::factory()->create([
             'barber_id' => $this->barber->id
         ]);
     }

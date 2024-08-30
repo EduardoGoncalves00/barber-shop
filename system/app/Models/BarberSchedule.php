@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ServicesRegisters extends Model
+class BarberSchedule extends Model
 {
     use HasFactory;
+
+    protected $table = 'barbers_schedules';
 }

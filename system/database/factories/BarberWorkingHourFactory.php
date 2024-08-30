@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\BarbersWorkingHours;
+use App\Models\BarberWorkingHour;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class BarbersWorkingHoursFactory extends Factory
+class BarberWorkingHourFactory extends Factory
 {
-    protected $model = BarbersWorkingHours::class;
+    protected $model = BarberWorkingHour::class;
 
     public function definition(): array
     {

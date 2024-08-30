@@ -4,7 +4,7 @@ namespace Tests\Unit\Barber;
 
 use App\Exceptions\EmailAlreadyRegisteredException;
 use App\Models\User;
-use App\Repositories\BarbersWorkingHoursRepository;
+use App\Repositories\BarberWorkingHourRepository;
 use App\Repositories\UserRepository;
 use Tests\TestCase;
 use App\Services\Barber\BarberService;
@@ -14,15 +14,15 @@ class BarberCreateTest extends TestCase
 {
     protected $barberService;
     protected $userRepository;
-    protected $barbersWorkingHoursRepository;
+    protected $barberWorkingHourRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->userRepository = Mockery::mock(UserRepository::class);
-        $this->barbersWorkingHoursRepository = Mockery::mock(BarbersWorkingHoursRepository::class);
-        $this->barberService = new BarberService($this->userRepository, $this->barbersWorkingHoursRepository);
+        $this->barberWorkingHourRepository = Mockery::mock(BarberWorkingHourRepository::class);
+        $this->barberService = new BarberService($this->userRepository, $this->barberWorkingHourRepository);
     }
 
     public function testCreateBarber(): void
@@ -34,7 +34,7 @@ class BarberCreateTest extends TestCase
             ->shouldReceive('create')
             ->andReturn($barber);
         
-        $this->barbersWorkingHoursRepository
+        $this->barberWorkingHourRepository
             ->shouldReceive('create')
             ->andReturn();
 
@@ -66,7 +66,7 @@ class BarberCreateTest extends TestCase
             ->shouldReceive('create')
             ->andReturn($barber);
         
-        $this->barbersWorkingHoursRepository
+        $this->barberWorkingHourRepository
             ->shouldReceive('create')
             ->andReturn();
 

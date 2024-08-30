@@ -3,7 +3,7 @@
 namespace Tests\Feature\Barber;
 
 use App\Exceptions\EmailAlreadyRegisteredException;
-use App\Repositories\BarbersWorkingHoursRepository;
+use App\Repositories\BarberWorkingHourRepository;
 use App\Repositories\UserRepository;
 use App\Services\Barber\BarberService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -22,8 +22,8 @@ class BarberCreateTest extends TestCase
         parent::setUp();
 
         $userRepository = new UserRepository();
-        $barbersWorkingHoursRepository = new BarbersWorkingHoursRepository();
-        $this->barberService = new BarberService($userRepository, $barbersWorkingHoursRepository);
+        $barberWorkingHourRepository = new BarberWorkingHourRepository();
+        $this->barberService = new BarberService($userRepository, $barberWorkingHourRepository);
     }
 
     public function testCreateBarber(): void

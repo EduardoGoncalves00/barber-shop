@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\BarbersSchedules;
+use App\Models\BarberSchedule;
 
 class BarberScheduleRepository
 {
@@ -11,7 +11,7 @@ class BarberScheduleRepository
      */
     public function getScheduleDayBarber(array $data)
     {   
-        return BarbersSchedules::select('barbers_schedules.selected_date_and_time')
+        return BarberSchedule::select('barbers_schedules.selected_date_and_time')
         ->join('services_registers', 'barbers_schedules.id', '=', 'services_registers.id')
         ->where('barbers_schedules.id', $data['barber_id'])
         ->whereDate('barbers_schedules.selected_date_and_time', $data['selected_day'])

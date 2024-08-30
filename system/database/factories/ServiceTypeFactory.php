@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\ServicesTypes;
+use App\Models\ServiceType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ServicesTypesFactory extends Factory
+class ServiceTypeFactory extends Factory
 {
-    protected $model = ServicesTypes::class;
+    protected $model = ServiceType::class;
 
     public function definition()
     {

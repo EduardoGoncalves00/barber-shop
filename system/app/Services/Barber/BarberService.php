@@ -3,18 +3,18 @@
 namespace App\Services\Barber;
 
 use App\Exceptions\EmailAlreadyRegisteredException;
-use App\Repositories\BarbersWorkingHoursRepository;
+use App\Repositories\BarberWorkingHourRepository;
 use App\Repositories\UserRepository;
 
 class BarberService
 {
     protected $userRepository;
-    protected $barbersWorkingHoursRepository;
+    protected $barberWorkingHourRepository;
 
-    public function __construct(UserRepository $userRepository, BarbersWorkingHoursRepository $barbersWorkingHoursRepository)
+    public function __construct(UserRepository $userRepository, BarberWorkingHourRepository $barberWorkingHourRepository)
     {
         $this->userRepository = $userRepository;
-        $this->barbersWorkingHoursRepository = $barbersWorkingHoursRepository;
+        $this->barberWorkingHourRepository = $barberWorkingHourRepository;
     }
 
     /**
@@ -33,7 +33,7 @@ class BarberService
 
         $data['barber_id'] = $barber->id;
 
-        $this->barbersWorkingHoursRepository->create($data);
+        $this->barberWorkingHourRepository->create($data);
 
         return true;
     }
@@ -47,7 +47,7 @@ class BarberService
         $data['id'] = auth()->user()->id;
 
         $this->userRepository->update($data);
-        $this->barbersWorkingHoursRepository->update($data);
+        $this->barberWorkingHourRepository->update($data);
 
         return true;
     }

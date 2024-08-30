@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Models\BarbersWorkingHours;
+use App\Models\BarberWorkingHour;
 
-class BarbersWorkingHoursRepository
+class BarberWorkingHourRepository
 {
     /**
      * @param int $barberID
@@ -12,7 +12,7 @@ class BarbersWorkingHoursRepository
      */
     public function getBarberWithWorkingHours(int $barberID): mixed
     {
-        return BarbersWorkingHours::join('users', 'barbers_working_hours.barber_id', '=', 'users.id')
+        return BarberWorkingHour::join('users', 'barbers_working_hours.barber_id', '=', 'users.id')
         ->where('barbers_working_hours.barber_id', $barberID)
         ->select('barbers_working_hours.start_work', 'barbers_working_hours.end_work')
         ->first();
@@ -20,11 +20,11 @@ class BarbersWorkingHoursRepository
 
     /**
      * @param array $data
-     * @return BarbersWorkingHours
+     * @return BarberWorkingHour
      */
-    public function create(array $data): BarbersWorkingHours
+    public function create(array $data): BarberWorkingHour
     {
-        return BarbersWorkingHours::create($data);
+        return BarberWorkingHour::create($data);
     }
 
     /**
@@ -33,7 +33,7 @@ class BarbersWorkingHoursRepository
      */
     public function update(array $data): bool
     {
-        $barber = BarbersWorkingHours::where('barber_id', $data['id'])->firstOrFail();
+        $barber = BarberWorkingHour::where('barber_id', $data['id'])->firstOrFail();
         return $barber->update($data);
     }
 }

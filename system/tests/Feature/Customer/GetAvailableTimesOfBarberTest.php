@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Customer;
 
-use App\Models\BarbersWorkingHours;
-use App\Models\ServicesTypes;
+use App\Models\BarberWorkingHour;
+use App\Models\ServiceType;
 use App\Models\User;
 use App\Repositories\BarberScheduleRepository;
-use App\Repositories\BarbersWorkingHoursRepository;
+use App\Repositories\BarberWorkingHourRepository;
 use App\Services\Customer\GetAvailableTimesOfBarberService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -29,19 +29,19 @@ class GetAvailableTimesOfBarberTest extends TestCase
             'type' => 'barber'
         ]);
 
-        $this->barberWorkingHours = BarbersWorkingHours::factory()->create([
+        $this->barberWorkingHours = BarberWorkingHour::factory()->create([
             'barber_id' => $this->barber->id
         ]);
 
-        $this->serviceType = ServicesTypes::factory()->create([
+        $this->serviceType = ServiceType::factory()->create([
             'service_name' => 'hair',
             'value' => 50,
             'estimated_time' => '00:30:00'
         ]);
 
-        $barbersWorkingHoursRepository = new BarbersWorkingHoursRepository();
+        $barberWorkingHourRepository = new BarberWorkingHourRepository();
         $barberScheduleRepository = new BarberScheduleRepository();
-        $this->getAvailableTimesOfBarberService = new GetAvailableTimesOfBarberService($barbersWorkingHoursRepository, $barberScheduleRepository);
+        $this->getAvailableTimesOfBarberService = new GetAvailableTimesOfBarberService($barberWorkingHourRepository, $barberScheduleRepository);
     }
 
     public function testGetTimesAvailable(): void

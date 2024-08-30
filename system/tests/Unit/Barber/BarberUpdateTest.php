@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Barber;
 
-use App\Repositories\BarbersWorkingHoursRepository;
+use App\Repositories\BarberWorkingHourRepository;
 use App\Repositories\UserRepository;
 use Tests\TestCase;
 use App\Services\Barber\BarberService;
@@ -12,7 +12,7 @@ use Mockery;
 class BarberUpdateTest extends TestCase
 {
     protected $userRepository;
-    protected $barbersWorkingHoursRepository;
+    protected $barberWorkingHourRepository;
     protected $barberService;
     protected $barber;
 
@@ -30,8 +30,8 @@ class BarberUpdateTest extends TestCase
         Auth::shouldReceive('user')->andReturn($this->barber);
 
         $this->userRepository = Mockery::mock(UserRepository::class);
-        $this->barbersWorkingHoursRepository = Mockery::mock(BarbersWorkingHoursRepository::class);
-        $this->barberService = new BarberService($this->userRepository, $this->barbersWorkingHoursRepository);
+        $this->barberWorkingHourRepository = Mockery::mock(BarberWorkingHourRepository::class);
+        $this->barberService = new BarberService($this->userRepository, $this->barberWorkingHourRepository);
     }
 
     public function testUpdateBarber(): void
@@ -40,7 +40,7 @@ class BarberUpdateTest extends TestCase
             ->shouldReceive('update')
             ->andReturn();
         
-        $this->barbersWorkingHoursRepository
+        $this->barberWorkingHourRepository
             ->shouldReceive('update')
             ->andReturn();
 
@@ -68,7 +68,7 @@ class BarberUpdateTest extends TestCase
             ->shouldReceive('update')
             ->andReturn();
         
-        $this->barbersWorkingHoursRepository
+        $this->barberWorkingHourRepository
             ->shouldReceive('update')
             ->andReturn();
 

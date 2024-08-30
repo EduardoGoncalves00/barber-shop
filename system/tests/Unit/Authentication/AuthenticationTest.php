@@ -2,12 +2,8 @@
 namespace Tests\Unit\Authentication;
 
 use App\Exceptions\IncorrectCredentialsException;
-use App\Models\User;
 use App\Services\Authentication\AuthenticationService;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Sanctum\Sanctum;
 use Mockery;
 use Tests\TestCase;
 

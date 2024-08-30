@@ -3,11 +3,9 @@
 namespace Tests\Unit\Customer;
 
 use App\Exceptions\EmailAlreadyRegisteredException;
-use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\Customer\CustomerService;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 
 class CustomerCreateTest extends TestCase

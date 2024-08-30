@@ -3,15 +3,14 @@
 namespace App\Repositories;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 
 class UserRepository
 {
     /**
      * @param int $id
-     * @return User
+     * @return mixed
      */
-    public function find(int $id): User
+    public function find(int $id): mixed
     {
         return User::find($id);
     }

@@ -3,7 +3,7 @@
 namespace Tests\Unit\Customer;
 
 use App\Repositories\BarberScheduleRepository;
-use App\Repositories\BarbersWorkingHoursRepository;
+use App\Repositories\BarberWorkingHourRepository;
 use App\Services\Customer\GetAvailableTimesOfBarberService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
@@ -14,7 +14,7 @@ class GetAvailableTimesOfBarberTest extends TestCase
 {
     use RefreshDatabase;
     
-    protected $barbersWorkingHoursRepository;
+    protected $barberWorkingHourRepository;
     protected $barberScheduleRepository;
     protected $getAvailableTimesOfBarberService;
 
@@ -22,14 +22,14 @@ class GetAvailableTimesOfBarberTest extends TestCase
     {
         parent::setUp();
 
-        $this->barbersWorkingHoursRepository = Mockery::mock(BarbersWorkingHoursRepository::class);
+        $this->barberWorkingHourRepository = Mockery::mock(BarberWorkingHourRepository::class);
         $this->barberScheduleRepository = Mockery::mock(BarberScheduleRepository::class);
-        $this->getAvailableTimesOfBarberService = new GetAvailableTimesOfBarberService($this->barbersWorkingHoursRepository, $this->barberScheduleRepository);
+        $this->getAvailableTimesOfBarberService = new GetAvailableTimesOfBarberService($this->barberWorkingHourRepository, $this->barberScheduleRepository);
     }
 
     public function testGetTimesAvailable(): void
     {    
-        $this->barbersWorkingHoursRepository
+        $this->barberWorkingHourRepository
             ->shouldReceive('getBarberWithWorkingHours')
             ->with(1)
             ->andReturn((object) [
