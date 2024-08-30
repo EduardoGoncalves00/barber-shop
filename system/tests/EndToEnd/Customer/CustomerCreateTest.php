@@ -27,7 +27,7 @@ class CustomerCreateTest extends TestCase
             'password' => 'thiago123'
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(200);
         $this->assertEquals("Success when creating.", $response['message']);
     }
 

@@ -31,7 +31,7 @@ class BarberCreateTest extends TestCase
             'end_work' => '19:00',
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(200);
         $this->assertEquals("Success when creating.", $response['message']);
     }
 

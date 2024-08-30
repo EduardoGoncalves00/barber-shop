@@ -10,7 +10,7 @@ use Mockery;
 use Tests\TestCase;
 
 // in construction
-class GetScheduleAvailableBarberTest extends TestCase
+class GetAvailableTimesOfBarberTest extends TestCase
 {
     use RefreshDatabase;
     
@@ -27,7 +27,7 @@ class GetScheduleAvailableBarberTest extends TestCase
         $this->getAvailableTimesOfBarberService = new GetAvailableTimesOfBarberService($this->barbersWorkingHoursRepository, $this->barberScheduleRepository);
     }
 
-    public function testGetScheduleAvailable(): void
+    public function testGetTimesAvailable(): void
     {    
         $this->barbersWorkingHoursRepository
             ->shouldReceive('getBarberWithWorkingHours')
@@ -41,7 +41,7 @@ class GetScheduleAvailableBarberTest extends TestCase
             ->shouldReceive('getScheduleDayBarber')
             ->andReturn([]);
 
-        $schduleAvailable = $this->getAvailableTimesOfBarberService->getScheduleAvailableBarber([
+        $schduleAvailable = $this->getAvailableTimesOfBarberService->getTimes([
             'barber_id' => 1,
             'service_id' => 1,
             'selected_day' => '2024-08-08'

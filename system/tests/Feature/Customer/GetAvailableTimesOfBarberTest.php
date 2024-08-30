@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 // in construction
-class GetScheduleAvailableBarberTest extends TestCase
+class GetAvailableTimesOfBarberTest extends TestCase
 {
     use RefreshDatabase;
     
@@ -44,9 +44,9 @@ class GetScheduleAvailableBarberTest extends TestCase
         $this->getAvailableTimesOfBarberService = new GetAvailableTimesOfBarberService($barbersWorkingHoursRepository, $barberScheduleRepository);
     }
 
-    public function testGetScheduleAvailable(): void
+    public function testGetTimesAvailable(): void
     {    
-        $schduleAvailable = $this->getAvailableTimesOfBarberService->getScheduleAvailableBarber([
+        $schduleAvailable = $this->getAvailableTimesOfBarberService->getTimes([
             'barber_id' => $this->barber->id,
             'service_id' => $this->serviceType->id,
             'selected_day' => '2024-08-08'
