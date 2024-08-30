@@ -46,10 +46,6 @@ class BarberService
     {
         $data['id'] = auth()->user()->id;
 
-        if (isset($data['email']) && $this->validateEmailAlreadyRegistered($data['email'])) {
-            throw new EmailAlreadyRegisteredException();
-        }
-
         $this->userRepository->update($data);
         $this->barbersWorkingHoursRepository->update($data);
 

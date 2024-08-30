@@ -115,4 +115,16 @@ class CustomerUpdateTest extends TestCase
             'type' => 'customer'
         ]);
     }
+
+    public function testPasswordSuccess(): void
+    {
+        $response = $this->post('/api/customer/update', [
+            'password' => 'bruno123'
+        ], [
+            'Authorization' => 'Bearer ' . $this->autentication['data']['token']
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertEquals("Success when updating.", $response['message']);
+    }
 }

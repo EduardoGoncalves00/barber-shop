@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Barber;
 
-use App\Exceptions\EmailAlreadyRegisteredException;
 use App\Models\BarbersWorkingHours;
 use App\Models\User;
 use App\Repositories\BarbersWorkingHoursRepository;
@@ -96,5 +95,16 @@ class BarberUpdateTest extends TestCase
             'start_work' => '09:00',
             'end_work' => '20:00'
         ]);
+    }
+
+    public function testUpdatePasswordBarber(): void
+    {
+        Sanctum::actingAs($this->barber);
+    
+        $barberUpdated = $this->barberService->update([
+            'password' => 'password',
+        ]);
+
+        $this->assertTrue($barberUpdated);
     }
 }

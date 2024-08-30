@@ -43,10 +43,6 @@ class CustomerService
     {
         $data['id'] = auth()->user()->id;
 
-        if (isset($data['email']) && $this->validateEmailAlreadyRegistered($data['email'])) {
-            throw new EmailAlreadyRegisteredException();
-        }
-
         return $this->userRepository->update($data);
     }
 

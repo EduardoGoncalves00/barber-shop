@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Customer;
 
-use App\Exceptions\EmailAlreadyRegisteredException;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\Customer\CustomerService;
@@ -62,21 +61,14 @@ class CustomerUpdateTest extends TestCase
         ]);
     }
 
-    // public function testUpdateCustomerEmailRegistered(): void
-    // {
-    //     $this->expectException(EmailAlreadyRegisteredException::class);
+    public function testUpdatePasswordCustomer(): void
+    {
+        Sanctum::actingAs($this->customer);
+    
+        $customerUpdated = $this->customerService->update([
+            'password' => 'password'
+        ]);
 
-    //     Sanctum::actingAs($this->customer);
-
-    //     $this->customerService->create([
-    //         'name' =>' Eduardo Boeira',
-    //         'email' => 'eduardo@example.com',
-    //         'phone' => '(51) 8888-8888',
-    //         'password' => 'password'
-    //     ]);
-
-    //     $this->customerService->update([
-    //         'email' => 'eduardo@example.com',
-    //     ]);
-    // }
+        $this->assertTrue($customerUpdated);
+    }
 }

@@ -159,4 +159,22 @@ class BarberUpdateTest extends TestCase
             'end_work' => '18:00'
         ]);
     }
+
+    public function testPasswordSuccess(): void
+    {
+        $response = $this->post('/api/barber/update', [
+            'name' => 'William Silva',
+            'phone' => '9006005211',
+            'password' => 'silva123',
+            'start_lunch' => '13:00',
+            'end_lunch' => '14:00',
+            'start_work' => '08:00',
+            'end_work' => '18:00'
+        ], [
+            'Authorization' => 'Bearer ' . $this->autentication['data']['token']
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertEquals("Success when updating.", $response['message']);
+    }
 }
