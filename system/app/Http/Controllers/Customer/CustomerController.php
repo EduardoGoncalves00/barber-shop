@@ -1,7 +1,10 @@
 <?php
 namespace App\Http\Controllers\Customer;
 
+use App\Exceptions\BarberDoesNotExistException;
 use App\Exceptions\EmailAlreadyRegisteredException;
+use App\Exceptions\SelectedDayInvalidException;
+use App\Exceptions\ServiceTypeDoesNotExistException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Barber\GetAvailableTimesOfBarberRequest;
 use App\Http\Requests\Barber\GetScheduleAvailableBarberRequest;
@@ -85,6 +88,30 @@ class CustomerController extends Controller
                 app(GetAvailableTimesOfBarberService::class)->getTimes($request->only(['barber_id', 'service_id', 'selected_day'])),
                 200
             );
+        } catch (BarberDoesNotExistException $e) {
+            Log::error(__METHOD__, [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
+
+            return new ApiResponseError("Informed barber does not exist.", 400);
+        } catch (ServiceTypeDoesNotExistException $e) {
+            Log::error(__METHOD__, [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
+
+            return new ApiResponseError("Informed service type does not exist.", 400);
+        } catch (SelectedDayInvalidException $e) {
+            Log::error(__METHOD__, [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
+
+            return new ApiResponseError("Selected day is old.", 400);
         } catch (Exception $e) {
             Log::error(__METHOD__, [
                 'message' => $e->getMessage(),

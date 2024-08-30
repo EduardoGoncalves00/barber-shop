@@ -2,19 +2,24 @@
 
 namespace App\Services\Customer;
 
+use App\Exceptions\BarberDoesNotExistException;
+use App\Exceptions\SelectedDayInvalidException;
+use App\Exceptions\ServiceTypeDoesNotExistException;
 use App\Repositories\BarberScheduleRepository;
-use App\Repositories\BarbersWorkingHoursRepository;
+use App\Repositories\BarberWorkingHourRepository;
+use App\Repositories\ServiceTypeRepository;
+use App\Repositories\UserRepository;
 use Carbon\Carbon;
 
 class GetAvailableTimesOfBarberService 
 {
     protected $scheduleDay = [];
-    protected $barbersWorkingHoursRepository;
+    protected $barberWorkingHourRepository;
     protected $barberScheduleRepository;
 
-    public function __construct(BarbersWorkingHoursRepository $barbersWorkingHoursRepository, BarberScheduleRepository $barberScheduleRepository)
+    public function __construct(BarberWorkingHourRepository $barberWorkingHourRepository, BarberScheduleRepository $barberScheduleRepository)
     {
-        $this->barbersWorkingHoursRepository = $barbersWorkingHoursRepository;
+        $this->barberWorkingHourRepository = $barberWorkingHourRepository;
         $this->barberScheduleRepository = $barberScheduleRepository;
     }
 
@@ -24,7 +29,9 @@ class GetAvailableTimesOfBarberService
      */
     public function getTimes(array $data): array
     {
-        $barber = $this->barbersWorkingHoursRepository->getBarberWithWorkingHours($data['barber_id']);
+        $this->validations($data);
+
+        $barber = $this->barberWorkingHourRepository->getBarberWithWorkingHours($data['barber_id']);
 
         $this->scheduleDay = $this->mountScheduleDay($barber->start_work, $barber->end_work);
 
@@ -105,5 +112,30 @@ class GetAvailableTimesOfBarberService
         }
 
         return $hoursOccupied;
+    }
+
+    /**
+     * @param array $data
+     * @return void
+     * 
+     * @throws BarberDoesNotExistException
+     * @throws ServiceTypeDoesNotExistException
+     * @throws SelectedDayInvalidException
+    */
+    private function validations(array $data): void
+    {
+        $barber = app(UserRepository::class)->find($data['barber_id']);
+        if (!$barber) {
+            throw new BarberDoesNotExistException();
+        }
+
+        $service = app(ServiceTypeRepository::class)->find($data['service_id']);
+        if (!$service) {
+            throw new ServiceTypeDoesNotExistException();
+        }
+
+        if (Carbon::parse($data['selected_day'])->isPast()) {
+            throw new SelectedDayInvalidException();
+        }
     }
 }
