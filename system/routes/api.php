@@ -20,27 +20,27 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('barber')->group(function () {
         Route::controller(BarberController::class)->group(function () {
-            Route::post('/update', 'update');
+            Route::post('/update', 'update')->middleware('ability:barber-type-update');
         });
     });
 
     Route::prefix('service-type')->group(function () {
         Route::controller(ServiceTypeController::class)->group(function () {
-            Route::get('/index', 'index');
-            Route::post('/create', 'create');
-            Route::post('/delete/{id}', 'delete');
-            Route::post('/update', 'update');
+            Route::get('/index', 'index')->middleware('ability:service-type-index');
+            Route::post('/create', 'create')->middleware('ability:service-type-create');
+            Route::post('/delete/{id}', 'delete')->middleware('ability:service-type-delete');;
+            Route::post('/update', 'update')->middleware('ability:service-type-update');
         });
     });
 
     Route::prefix('customer')->group(function () {
         Route::controller(CustomerController::class)->group(function () {
-            Route::post('/update', 'update');
-            Route::post('/get-available-times-of-barber', 'GetAvailableTimesOfBarber');
+            Route::post('/update', 'update')->middleware('ability:customer-update');
+            Route::post('/get-available-times-of-barber', 'GetAvailableTimesOfBarber')->middleware('ability:customer-get-available-times-of-barber');
         });
     });
 
-    Route::post('/logout', [AuthenticationController::class, 'logout']);
+    Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('ability:logout');
 });
 
 Route::post('/login', [AuthenticationController::class, 'login']);
