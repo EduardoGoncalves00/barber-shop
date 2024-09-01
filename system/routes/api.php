@@ -3,6 +3,7 @@
 use App\Http\Controllers\Authentication\AuthenticationController;
 use App\Http\Controllers\Barber\BarberController;
 use App\Http\Controllers\Customer\CustomerController;
+use App\Http\Controllers\ServiceType\ServiceTypeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +20,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('barber')->group(function () {
         Route::controller(BarberController::class)->group(function () {
+            Route::post('/update', 'update');
+        });
+    });
+
+    Route::prefix('service-type')->group(function () {
+        Route::controller(ServiceTypeController::class)->group(function () {
+            Route::get('/index', 'index');
+            Route::post('/create', 'create');
+            Route::post('/delete/{id}', 'delete');
             Route::post('/update', 'update');
         });
     });
