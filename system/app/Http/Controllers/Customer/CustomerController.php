@@ -10,10 +10,12 @@ use App\Http\Requests\Barber\GetAvailableTimesOfBarberRequest;
 use App\Http\Requests\Barber\GetScheduleAvailableBarberRequest;
 use App\Http\Requests\Customer\UpdateCustomerRequest;
 use App\Http\Requests\Customer\CreateCustomerRequest;
+use App\Http\Requests\Customer\MakeReserveRequest;
 use App\Http\Responses\ApiResponseSuccess;
 use App\Http\Responses\ApiResponseError;
 use App\Services\Customer\GetAvailableTimesOfBarberService;
 use App\Services\Customer\CustomerService;
+use App\Services\Customer\MakeReserveService;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
@@ -120,6 +122,32 @@ class CustomerController extends Controller
             ]);
 
             return new ApiResponseError("Error when get available times of barber.", 400);
+        }
+    }
+
+    /**
+     * @param MakeReserveRequest $request
+     * @return mixed
+     * 
+     * @throws Exception
+     */
+    public function MakeReserve(MakeReserveRequest $request): mixed
+    {
+        try {
+            app(MakeReserveService::class)->make($request->only(['service_id', 'selected_time', 'barber_id', 'observation']));
+
+            return new ApiResponseSuccess(
+                "Success when make reserve.",
+                200
+            );
+        } catch (Exception $e) {
+            Log::error(__METHOD__, [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
+
+            return new ApiResponseError("Error when make reserve.", 400);
         }
     }
 }

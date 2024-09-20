@@ -4,7 +4,7 @@ namespace App\Http\Requests\Customer;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MakeReservationRequest extends FormRequest
+class MakeReserveRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,6 @@ class MakeReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'customer_id' => 'required|integer',
             'service_id' => 'required|integer',
             'selected_time' => 'required|date_format:H:i',
             'barber_id' => 'required|integer',

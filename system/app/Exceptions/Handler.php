@@ -25,11 +25,11 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->renderable(function (AccessDeniedHttpException $e, Request $request) {
-            return response()->json([
-                "message" => "unauthenticated.",
-            ], 403);
-        });
+        // $this->renderable(function (AccessDeniedHttpException $e, Request $request) {
+        //     return response()->json([
+        //         "message" => "unauthenticated.",
+        //     ], 403);
+        // });
 
         $this->reportable(function (Throwable $e) {
             //

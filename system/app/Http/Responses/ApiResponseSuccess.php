@@ -30,12 +30,13 @@ class ApiResponseSuccess implements Responsable
     public function toResponse($request): JsonResponse
     {
         $responseArray = [
-            'message' => $this->message
+            'message' => $this->message,
+            'data' => $this->data
         ];
 
-        if (!empty($this->data)) {
-            $responseArray['data'] = $this->data;
-        }
+        // if (!empty($this->data)) {
+        //     $responseArray['data'] = $this->data;
+        // }
 
         return response()->json($responseArray, $this->status);
     }

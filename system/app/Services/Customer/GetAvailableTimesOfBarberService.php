@@ -50,11 +50,16 @@ class GetAvailableTimesOfBarberService
     
         $times = [];
     
+        $lunchStart = Carbon::createFromTimeString('12:00');
+        $lunchEnd = Carbon::createFromTimeString('13:00');
+        
         while ($startWork < $endWork) {
-            $times[] = $startWork->format('H:i');
+            if ($startWork < $lunchStart || $startWork >= $lunchEnd) {
+                $times[] = $startWork->format('H:i');
+            }
             $startWork->addMinutes(30);
         }
-    
+        
         return $times;
     }
     

@@ -50,7 +50,7 @@ class CustomerService
      * @param string $email
      * @return bool
     */
-    public function validateEmailAlreadyRegistered(string $email): bool
+    private function validateEmailAlreadyRegistered(string $email): bool
     {
         $emailRegistered = $this->userRepository->getByEmail($email);
         return $emailRegistered ? true : false;
