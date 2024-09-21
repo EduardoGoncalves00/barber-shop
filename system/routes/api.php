@@ -28,7 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::controller(ServiceTypeController::class)->group(function () {
             Route::get('/index', 'index')->middleware('ability:service-type-index');
             Route::post('/create', 'create')->middleware('ability:service-type-create');
-            Route::post('/delete/{id}', 'delete')->middleware('ability:service-type-delete');;
+            Route::post('/delete/{id}', 'delete')->middleware('ability:service-type-delete');
             Route::post('/update', 'update')->middleware('ability:service-type-update');
         });
     });
@@ -36,8 +36,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('customer')->group(function () {
         Route::controller(CustomerController::class)->group(function () {
             Route::post('/update', 'update')->middleware('ability:customer-update');
-            Route::post('/get-available-times-of-barber', 'GetAvailableTimesOfBarber')->middleware('ability:customer-get-available-times-of-barber');
-            Route::post('/make-reservation', 'MakeReserve');
+            Route::post('/get-available-times-of-barber', 'getAvailableTimesOfBarber')->middleware('ability:customer-get-available-times-of-barber');
+            Route::post('/make-reserve', 'makeReserve')->middleware('ability:customer-make-reserve');
         });
     });
 

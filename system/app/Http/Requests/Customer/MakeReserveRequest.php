@@ -23,7 +23,7 @@ class MakeReserveRequest extends FormRequest
     {
         return [
             'service_id' => 'required|integer',
-            'selected_time' => 'required|date_format:H:i',
+            'selected_date_and_time' => 'required|date_format:Y-m-d H:i',
             'barber_id' => 'required|integer',
             'observation' => 'nullable|string'
         ];

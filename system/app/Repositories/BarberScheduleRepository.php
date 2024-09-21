@@ -8,13 +8,19 @@ class BarberScheduleRepository
 {
     /**
      * @param array $data
+     * @return mixed
      */
-    public function getScheduleDayBarber(array $data)
+    public function create(array $data): mixed
     {   
-        return BarberSchedule::select('barbers_schedules.selected_date_and_time')
-        ->join('services_registers', 'barbers_schedules.id', '=', 'services_registers.id')
-        ->where('barbers_schedules.id', $data['barber_id'])
-        ->whereDate('barbers_schedules.selected_date_and_time', $data['selected_day'])
-        ->get();
+        return BarberSchedule::create($data);
+    }
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function getScheduleDayBarber(array $data): mixed
+    {   
+        return BarberSchedule::whereDate('selected_date_and_time', $data['selected_day'])->get();
     }
 }

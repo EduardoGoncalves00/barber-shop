@@ -32,11 +32,11 @@ class AuthenticationService
     private function getUserAbilities(User $user): array
     {   
         if ($user->type === "customer") {
-            return ['customer-update', 'ability:customer-get-available-times-of-barber', 'ability:logout'];
+            return ['customer-update', 'customer-get-available-times-of-barber', 'logout', 'customer-make-reserve'];
         }
-        //  'ability:customer-make-reservation'
+
         if ($user->type === "barber") {
-            return ['ability:customer-update', 'ability:logout', 'ability:customer-service-type-index', 'ability:customer-service-type-create', 'ability:customer-service-type-delete', 'ability:customer-service-type-update'];
+            return ['customer-update', 'logout', 'service-type-index', 'service-type-create', 'service-type-delete', 'service-type-update'];
         }
 
         return [];

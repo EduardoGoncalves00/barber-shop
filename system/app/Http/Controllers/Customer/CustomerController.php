@@ -3,17 +3,17 @@ namespace App\Http\Controllers\Customer;
 
 use App\Exceptions\BarberDoesNotExistException;
 use App\Exceptions\EmailAlreadyRegisteredException;
+use App\Exceptions\HoursNotAvailableException;
 use App\Exceptions\SelectedDayInvalidException;
 use App\Exceptions\ServiceTypeDoesNotExistException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Barber\GetAvailableTimesOfBarberRequest;
-use App\Http\Requests\Barber\GetScheduleAvailableBarberRequest;
+use App\Http\Requests\Customer\GetAvailableTimesOfBarberRequest;
 use App\Http\Requests\Customer\UpdateCustomerRequest;
 use App\Http\Requests\Customer\CreateCustomerRequest;
 use App\Http\Requests\Customer\MakeReserveRequest;
 use App\Http\Responses\ApiResponseSuccess;
 use App\Http\Responses\ApiResponseError;
-use App\Services\Customer\GetAvailableTimesOfBarberService;
+use App\Services\Customer\AvailableTimesOfBarberService;
 use App\Services\Customer\CustomerService;
 use App\Services\Customer\MakeReserveService;
 use Exception;
@@ -82,12 +82,12 @@ class CustomerController extends Controller
      * 
      * @throws Exception
      */
-    public function GetAvailableTimesOfBarber(GetAvailableTimesOfBarberRequest $request): mixed
+    public function getAvailableTimesOfBarber(GetAvailableTimesOfBarberRequest $request): mixed
     {
         try {
             return new ApiResponseSuccess(
                 "Success when get available times of barber.",
-                app(GetAvailableTimesOfBarberService::class)->getTimes($request->only(['barber_id', 'service_id', 'selected_day'])),
+                app(AvailableTimesOfBarberService::class)->getAvailableTimes($request->only(['barber_id', 'service_id', 'selected_day'])),
                 200
             );
         } catch (BarberDoesNotExistException $e) {
@@ -131,15 +131,23 @@ class CustomerController extends Controller
      * 
      * @throws Exception
      */
-    public function MakeReserve(MakeReserveRequest $request): mixed
+    public function makeReserve(MakeReserveRequest $request): mixed
     {
         try {
-            app(MakeReserveService::class)->make($request->only(['service_id', 'selected_time', 'barber_id', 'observation']));
+            app(MakeReserveService::class)->makeReserve($request->only(['service_id', 'selected_date_and_time', 'barber_id', 'observation']));
 
             return new ApiResponseSuccess(
                 "Success when make reserve.",
                 200
             );
+        } catch (HoursNotAvailableException $e) {
+            Log::error(__METHOD__, [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
+
+            return new ApiResponseError("Hours not available.", 400);
         } catch (Exception $e) {
             Log::error(__METHOD__, [
                 'message' => $e->getMessage(),

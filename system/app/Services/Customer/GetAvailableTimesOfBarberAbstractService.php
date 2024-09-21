@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Services\Customer;
 
 use App\Exceptions\BarberDoesNotExistException;
@@ -11,7 +12,7 @@ use App\Repositories\ServiceTypeRepository;
 use App\Repositories\UserRepository;
 use Carbon\Carbon;
 
-class GetAvailableTimesOfBarberService 
+abstract class GetAvailableTimesOfBarberAbstractService 
 {
     protected $scheduleDay = [];
     protected $barberWorkingHourRepository;
@@ -43,7 +44,7 @@ class GetAvailableTimesOfBarberService
      * @param string $endWork
      * @return array
      */
-    private function mountScheduleDay($startWork, $endWork): array
+    protected function mountScheduleDay(string $startWork, string $endWork): array
     {
         $startWork = Carbon::createFromTimeString($startWork);
         $endWork = Carbon::createFromTimeString($endWork);
@@ -67,7 +68,7 @@ class GetAvailableTimesOfBarberService
      * @param array $data
      * @return array
      */
-    private function filterAvailableTimes(array $data): array
+    protected function filterAvailableTimes(array $data): array
     {
         $durationInMinutesService = 30;
 
@@ -86,7 +87,7 @@ class GetAvailableTimesOfBarberService
      * @param array $hoursOccupied
      * @return array
      */
-    private function availableTimes(int $totalSlots, int $requiredSlot, array $hoursOccupied): array
+    protected function availableTimes(int $totalSlots, int $requiredSlot, array $hoursOccupied): array
     {
         for ($i = 0; $i < $totalSlots; $i++) {
             
@@ -106,7 +107,7 @@ class GetAvailableTimesOfBarberService
      * @param array $data
      * @return array
      */
-    private function getHoursMarkedDaySelected(array $data): array
+    protected function getHoursMarkedDaySelected(array $data): array
     {
         $getHoursMarkedDaySelected = $this->barberScheduleRepository->getScheduleDayBarber($data);
 
@@ -127,7 +128,7 @@ class GetAvailableTimesOfBarberService
      * @throws ServiceTypeDoesNotExistException
      * @throws SelectedDayInvalidException
     */
-    private function validations(array $data): void
+    protected function validations(array $data): void
     {
         $barber = app(UserRepository::class)->find($data['barber_id']);
         if (!$barber) {
