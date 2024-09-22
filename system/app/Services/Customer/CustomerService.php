@@ -3,16 +3,19 @@
 namespace App\Services\Customer;
 
 use App\Exceptions\EmailAlreadyRegisteredException;
+use App\Repositories\BarberScheduleRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
 
 class CustomerService
 {
     protected $userRepository;
+    protected $barberScheduleRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, BarberScheduleRepository $barberScheduleRepository)
     {
         $this->userRepository = $userRepository;
+        $this->barberScheduleRepository = $barberScheduleRepository;
     }
 
     /**
@@ -44,6 +47,16 @@ class CustomerService
         $data['id'] = auth()->user()->id;
 
         return $this->userRepository->update($data);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReserve(): mixed
+    {
+        $id = auth()->user()->id;
+
+        return $this->barberScheduleRepository->getReserveByCustomer($id);
     }
 
     /**

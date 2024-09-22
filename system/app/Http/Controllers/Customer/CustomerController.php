@@ -158,4 +158,30 @@ class CustomerController extends Controller
             return new ApiResponseError("Error when make reserve.", 400);
         }
     }
+
+    /**
+     * @return mixed
+     * 
+     * @throws Exception
+     */
+    public function getMyReserve(): mixed
+    {
+        try {
+            $reserve = app(CustomerService::class)->getReserve();
+
+            return new ApiResponseSuccess(
+                "Success when get reserve.",
+                $reserve,
+                200
+            );
+        } catch (Exception $e) {
+            Log::error(__METHOD__, [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
+
+            return new ApiResponseError("Error when get reserve.", 400);
+        }
+    }
 }

@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('barber')->group(function () {
         Route::controller(BarberController::class)->group(function () {
-            Route::post('/update', 'update')->middleware('ability:barber-type-update');
+            Route::post('/update', 'update')->middleware('ability:barber-update');
         });
     });
 
@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/update', 'update')->middleware('ability:customer-update');
             Route::post('/get-available-times-of-barber', 'getAvailableTimesOfBarber')->middleware('ability:customer-get-available-times-of-barber');
             Route::post('/make-reserve', 'makeReserve')->middleware('ability:customer-make-reserve');
+            Route::get('/get-reservations', 'getMyReserve')->middleware('ability:customer-get-my-reserve');
         });
     });
 
