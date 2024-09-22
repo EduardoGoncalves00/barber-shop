@@ -11,5 +11,5 @@ class BarberSchedule extends Model
 
     protected $table = 'barbers_schedules';
 
-    protected $fillable = ['service_register_id', 'customer_id',  'selected_date_and_time', 'observation'];
+    protected $fillable = ['service_register_id', 'customer_id',  'selected_day_and_time', 'observation'];
 }

@@ -114,7 +114,7 @@ abstract class GetAvailableTimesOfBarberAbstractService
         $hoursOccupied = [];
         
         foreach ($getHoursMarkedDaySelected as $value) {
-            $hoursOccupied[] = Carbon::createFromTimeString($value->selected_date_and_time)->format('H:i');
+            $hoursOccupied[] = Carbon::createFromTimeString($value->selected_day_and_time)->format('H:i');
         }
 
         return $hoursOccupied;

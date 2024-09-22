@@ -134,7 +134,7 @@ class CustomerController extends Controller
     public function makeReserve(MakeReserveRequest $request): mixed
     {
         try {
-            app(MakeReserveService::class)->makeReserve($request->only(['service_id', 'selected_date_and_time', 'barber_id', 'observation']));
+            app(MakeReserveService::class)->makeReserve($request->only(['service_id', 'selected_day_and_time', 'barber_id', 'observation']));
 
             return new ApiResponseSuccess(
                 "Success when make reserve.",

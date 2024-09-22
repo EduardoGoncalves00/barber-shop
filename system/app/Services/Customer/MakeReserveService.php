@@ -16,8 +16,8 @@ class MakeReserveService extends GetAvailableTimesOfBarberAbstractService
     */
     public function makeReserve(array $data): mixed
     {
-        $data['selected_day'] = Carbon::parse($data['selected_date_and_time'])->format('Y-m-d');
-        $selectedMinute = Carbon::parse($data['selected_date_and_time'])->format('H:i');
+        $data['selected_day'] = Carbon::parse($data['selected_day_and_time'])->format('Y-m-d');
+        $selectedMinute = Carbon::parse($data['selected_day_and_time'])->format('H:i');
 
         $availableTimes = $this->getTimes($data);
 

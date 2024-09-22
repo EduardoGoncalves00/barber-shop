@@ -21,7 +21,7 @@ class BarberScheduleRepository
      */
     public function getScheduleDayBarber(array $data): mixed
     {   
-        return BarberSchedule::whereDate('selected_date_and_time', $data['selected_day'])->get();
+        return BarberSchedule::whereDate('selected_day_and_time', $data['selected_day'])->get();
     }
 
     /**
@@ -30,7 +30,7 @@ class BarberScheduleRepository
      */
     public function getReserveByCustomer(int $id): mixed
     {
-        return BarberSchedule::select('service_type_id', 'selected_date_and_time', 'observation', 'barbers_schedules.barber_id')
+        return BarberSchedule::select('service_type_id', 'selected_day_and_time', 'observation', 'barbers_schedules.barber_id')
             ->join('services_registers', 'barbers_schedules.service_register_id', '=', 'services_registers.id')
             ->where('barbers_schedules.customer_id', $id)
             ->get();
