@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\BarberSchedule;
+use Illuminate\Support\Collection;
 
 class BarberScheduleRepository
 {
@@ -25,14 +26,14 @@ class BarberScheduleRepository
     }
 
     /**
-     * @param int $id
-     * @return mixed
+     * @param int $customerId
+     * @return Collection
      */
-    public function getReserveByCustomer(int $id): mixed
+    public function getReserveByCustomer(int $customerId): Collection
     {
-        return BarberSchedule::select('service_type_id', 'selected_day_and_time', 'observation', 'barbers_schedules.barber_id')
-            ->join('services_registers', 'barbers_schedules.service_register_id', '=', 'services_registers.id')
-            ->where('barbers_schedules.customer_id', $id)
+        return BarberSchedule::with('serviceRegister')
+            ->where('customer_id', $customerId)
+            ->select('service_register_id', 'selected_day_and_time', 'observation', 'barber_id')
             ->get();
     }
 }

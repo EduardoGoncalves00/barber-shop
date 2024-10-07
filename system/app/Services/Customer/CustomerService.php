@@ -54,9 +54,22 @@ class CustomerService
      */
     public function getReserve(): mixed
     {
-        $id = auth()->user()->id;
+        $customerId = auth()->user()->id;
 
-        return $this->barberScheduleRepository->getReserveByCustomer($id);
+        $reservations = $this->barberScheduleRepository->getReserveByCustomer($customerId);
+        
+        $formattedReservations = [];
+        
+        foreach ($reservations as $schedule) {
+            $formattedReservations[] = [
+                'service_type_id' => $schedule->serviceRegister->service_type_id,
+                'selected_day_and_time' => $schedule->selected_day_and_time,
+                'observation' => $schedule->observation,
+                'barber_id' => $schedule->barber_id,
+            ];
+        }
+
+        return $formattedReservations;
     }
 
     /**

@@ -11,5 +11,10 @@ class BarberSchedule extends Model
 
     protected $table = 'barbers_schedules';
 
-    protected $fillable = ['service_register_id', 'customer_id',  'selected_day_and_time', 'observation'];
+    protected $fillable = ['barber_id', 'service_register_id', 'customer_id',  'selected_day_and_time', 'observation'];
+
+    public function serviceRegister()
+    {
+        return $this->belongsTo(ServiceRegister::class, 'service_register_id');
+    }
 }

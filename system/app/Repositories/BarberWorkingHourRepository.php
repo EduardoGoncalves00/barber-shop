@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\BarberWorkingHour;
+use App\Models\User;
 
 class BarberWorkingHourRepository
 {
@@ -12,10 +13,9 @@ class BarberWorkingHourRepository
      */
     public function getBarberWithWorkingHours(int $barberID): mixed
     {
-        return BarberWorkingHour::join('users', 'barbers_working_hours.barber_id', '=', 'users.id')
-        ->where('barbers_working_hours.barber_id', $barberID)
-        ->select('barbers_working_hours.start_work', 'barbers_working_hours.end_work')
-        ->first();
+        return BarberWorkingHour::where('barber_id', $barberID)
+            ->select('start_work', 'end_work', 'start_lunch', 'end_lunch')
+            ->first();
     }
 
     /**

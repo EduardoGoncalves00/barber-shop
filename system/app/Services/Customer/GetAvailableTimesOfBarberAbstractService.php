@@ -6,6 +6,7 @@ namespace App\Services\Customer;
 use App\Exceptions\BarberDoesNotExistException;
 use App\Exceptions\SelectedDayInvalidException;
 use App\Exceptions\ServiceTypeDoesNotExistException;
+use App\Models\BarberWorkingHour;
 use App\Repositories\BarberScheduleRepository;
 use App\Repositories\BarberWorkingHourRepository;
 use App\Repositories\ServiceTypeRepository;
@@ -34,36 +35,40 @@ abstract class GetAvailableTimesOfBarberAbstractService
 
         $barber = $this->barberWorkingHourRepository->getBarberWithWorkingHours($data['barber_id']);
 
-        $this->scheduleDay = $this->mountScheduleDay($barber->start_work, $barber->end_work);
+        $this->scheduleDay = $this->mountScheduleDay($barber);
 
         return $this->filterAvailableTimes($data);
     }
     
     /**
-     * @param string $startWork
-     * @param string $endWork
+     * @param BarberWorkingHour $barber
      * @return array
      */
-    protected function mountScheduleDay(string $startWork, string $endWork): array
+    protected function mountScheduleDay(BarberWorkingHour $barber): array
     {
-        $startWork = Carbon::createFromTimeString($startWork);
-        $endWork = Carbon::createFromTimeString($endWork);
-    
+        $startWork = Carbon::createFromTimeString($barber->start_work);
+        $endWork = Carbon::createFromTimeString($barber->end_work);
+        $lunchStart = Carbon::createFromTimeString($barber->start_lunch);
+        $lunchEnd = Carbon::createFromTimeString($barber->end_lunch);
         $times = [];
-    
-        $lunchStart = Carbon::createFromTimeString('12:00');
-        $lunchEnd = Carbon::createFromTimeString('13:00');
-        
+
+        if (Carbon::now()->isToday()) {
+            if ($startWork->isPast()) {
+                $startWork = Carbon::now();
+            }
+        }
+
         while ($startWork < $endWork) {
             if ($startWork < $lunchStart || $startWork >= $lunchEnd) {
                 $times[] = $startWork->format('H:i');
             }
+
             $startWork->addMinutes(30);
         }
-        
+
         return $times;
     }
-    
+
     /**
      * @param array $data
      * @return array
@@ -140,7 +145,7 @@ abstract class GetAvailableTimesOfBarberAbstractService
             throw new ServiceTypeDoesNotExistException();
         }
 
-        if (Carbon::parse($data['selected_day'])->isPast()) {
+        if (Carbon::parse($data['selected_day'])->lessThanOrEqualTo(Carbon::yesterday())) {
             throw new SelectedDayInvalidException();
         }
     }
